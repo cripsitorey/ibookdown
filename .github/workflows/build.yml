@@ -39,12 +39,16 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-electron-
 
-    - name: Build for ${{ matrix.platform }}
-      run: |
-        npm run dist:${{ matrix.platform }}
+    - name: Build for Windows
+      if: matrix.platform == 'win32'
+      run: npm run dist:win
       env:
         CSC_LINK: ${{ secrets.CSC_LINK }}
         CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+
+    - name: Build for Linux
+      if: matrix.platform == 'linux'
+      run: npm run dist:linux
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
