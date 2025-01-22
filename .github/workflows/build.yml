@@ -1,0 +1,53 @@
+name: Build Electron App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        platform: [win32, linux] # Plataformas a construir
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16 # Usa la versión de Node.js compatible con Electron
+
+    - name: Install dependencies
+      run: |
+        npm install
+
+    - name: Cache Electron builder dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/electron
+          ~/.cache/electron-builder
+        key: ${{ runner.os }}-electron-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-electron-
+
+    - name: Build for ${{ matrix.platform }}
+      run: |
+        npm run dist:${{ matrix.platform }}
+      env:
+        CSC_LINK: ${{ secrets.CSC_LINK }}
+        CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ElectronApp-${{ matrix.platform }}
+        path: dist/
