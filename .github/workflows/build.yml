@@ -23,7 +23,13 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 16 # Usa la versión de Node.js compatible con Electron
+        node-version: 16
+
+    - name: Install Wine
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt update
+        sudo apt install -y wine64 wine32
 
     - name: Install dependencies
       run: |
