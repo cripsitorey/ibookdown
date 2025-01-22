@@ -25,6 +25,7 @@
       "!node_modules/**/*",
       "!dist/**/*"
     ],
+    "publish": "always",
     "win": {
       "target": "nsis",
       "icon": "icon.ico",
