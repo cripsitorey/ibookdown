@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Downloader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f3f4f7, #dcdde1);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #2f3640;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #8c7ae6;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    label {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+
+    input {
+      width: 300px;
+      padding: 10px;
+      margin: 5px 0;
+      border: 2px solid #8c7ae6;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #44bd32;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #4cd137;
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .message {
+      font-size: 1.5rem;
+      margin-top: 30px;
+      text-align: center;
+      color: #40739e;
+      animation: slideIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Book Downloader</h1>
+  <label for="urlInput">URL del libro:</label>
+  <input type="text" id="urlInput" placeholder="https://example.com">
+  <br><br>
+  <label for="selectorInput">Selector del botón "Siguiente":</label>
+  <input type="text" id="selectorInput" placeholder="#nextPage">
+  <br><br>
+  <button id="startButton">Iniciar Descarga</button>
+  <div class="message">Para usted profe Luis, con cariño de Emilio</div>
+  <script src="renderer.js"></script>
+</body>
+</html>
