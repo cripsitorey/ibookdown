@@ -12,10 +12,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        platform: [win32, linux] # Plataformas a construir
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -45,19 +41,12 @@ jobs:
           ${{ runner.os }}-electron-
 
     - name: Build for Windows
-      if: matrix.platform == 'win32'
       run: npm run dist:win
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-    - name: Build for Linux
-      if: matrix.platform == 'linux'
-      run: npm run dist:linux
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: ElectronApp-${{ matrix.platform }}
+        name: ElectronApp-Windows
         path: dist/
