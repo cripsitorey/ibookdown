@@ -1,23 +1,35 @@
 document.getElementById('startButton').addEventListener('click', () => {
   const url = document.getElementById('urlInput').value;
+  const usernameSelector = document.getElementById('usernameSelector').value;
+  const passwordSelector = document.getElementById('passwordSelector').value;
+  const username = document.getElementById('usernameInput').value;
+  const password = document.getElementById('passwordInput').value;
+  const loginButtonSelector = document.getElementById('loginButtonSelector').value;
+  const bookSelector = document.getElementById('bookSelector').value;
   const nextButtonSelector = document.getElementById('selectorInput').value;
 
-  if (!url || !nextButtonSelector) {
-    alert('Por favor ingresa una URL y un selector válidos.');
+  if (!url || !usernameSelector || !passwordSelector || !username || !password || !loginButtonSelector || !bookSelector || !nextButtonSelector) {
+    alert('Por favor completa todos los campos.');
     return;
   }
 
-  console.log(`Iniciando descarga con URL: ${url} y selector: ${nextButtonSelector}`);
-  window.api.send('start-download', { url, nextButtonSelector });
+  console.log('Iniciando descarga con los siguientes datos:', {
+    url, usernameSelector, passwordSelector, username, password, loginButtonSelector, bookSelector, nextButtonSelector,
+  });
+
+  window.api.send('start-download', {
+    url,
+    usernameSelector,
+    passwordSelector,
+    username,
+    password,
+    loginButtonSelector,
+    bookSelector,
+    nextButtonSelector,
+  });
 });
 
-window.api.receive('download-complete', (args) => {
-  if (args.success) {
-    alert(`¡Descarga completada! PDF guardado en: ${args.pdfPath}`);
-  } else {
-    alert(`Error durante la descarga: ${args.error}`);
-  }
-});
+
 
 window.api.receive('update-available', () => {
   alert('¡Nueva actualización disponible! Se está descargando.');

@@ -10,10 +10,8 @@
       background: linear-gradient(135deg, #f3f4f7, #dcdde1);
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: block;
+      text-align: center;
       height: 100vh;
       color: #2f3640;
     }
@@ -29,6 +27,9 @@
     label {
       font-size: 1.2rem;
       margin: 10px 0;
+      display: inline-block;
+      text-align: left;
+      width: 300px;
     }
 
     input {
@@ -91,14 +92,46 @@
 </head>
 <body>
   <h1>Book Downloader</h1>
-  <label for="urlInput">URL del libro:</label>
-  <input type="text" id="urlInput" placeholder="https://example.com">
+
+  <!-- Campos para URL y credenciales -->
+  <label for="urlInput">URL del inicio de sesión:</label>
+  <input type="text" id="urlInput" placeholder="https://example.com/login">
   <br><br>
+
+  <label for="usernameSelector">Selector del campo "Usuario":</label>
+  <input type="text" id="usernameSelector" placeholder="#usernameField">
+  <br><br>
+
+  <label for="passwordSelector">Selector del campo "Contraseña":</label>
+  <input type="text" id="passwordSelector" placeholder="#passwordField">
+  <br><br>
+
+  <label for="usernameInput">Usuario:</label>
+  <input type="text" id="usernameInput" placeholder="Tu usuario">
+  <br><br>
+
+  <label for="passwordInput">Contraseña:</label>
+  <input type="password" id="passwordInput" placeholder="Tu contraseña">
+  <br><br>
+
+  <label for="loginButtonSelector">Selector del botón "Ingresar":</label>
+  <input type="text" id="loginButtonSelector" placeholder="#loginButton">
+  <br><br>
+
+  <!-- Campo para seleccionar libro -->
+  <label for="bookSelector">Selector del libro:</label>
+  <input type="text" id="bookSelector" placeholder="#bookSelector">
+  <br><br>
+
+  <!-- Campo para selector del botón siguiente -->
   <label for="selectorInput">Selector del botón "Siguiente":</label>
   <input type="text" id="selectorInput" placeholder="#nextPage">
   <br><br>
+
   <button id="startButton">Iniciar Descarga</button>
+
   <div class="message">Para usted profe Luis, con cariño de Emilio</div>
+
   <script src="renderer.js"></script>
 </body>
 </html>
