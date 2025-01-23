@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
+const fs = require('fs');
 
 let mainWindow;
 
@@ -15,18 +17,46 @@ app.on('ready', () => {
   });
 
   mainWindow.loadFile('index.html');
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
+
+  // Configurar auto-updater
+  autoUpdater.checkForUpdatesAndNotify();
+
+  autoUpdater.on('update-available', () => {
+    console.log('Nueva actualización disponible.');
+    mainWindow.webContents.send('update-available');
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    console.log('Actualización descargada. Lista para instalar.');
+    mainWindow.webContents.send('update-downloaded');
+  });
+
+  ipcMain.on('restart-to-update', () => {
+    autoUpdater.quitAndInstall();
+  });
+});
+
 
   ipcMain.on('start-download', async (event, args) => {
     console.log('Descarga iniciada:', args);
 
     const puppeteer = require('puppeteer');
-    const fs = require('fs');
     const { PDFDocument } = require('pdf-lib');
     const axios = require('axios');
-    const outputDir = path.join(__dirname, 'downloads');
 
-    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+    // Definir el directorio de salida según el entorno
+    const outputDir = app.isPackaged
+      ? path.join(app.getPath('documents'), 'IB-Book-Downloader') // En producción, usar carpeta Documentos del usuario
+      : path.join(__dirname, 'downloads'); // En desarrollo, usar carpeta local
+
+    // Crear el directorio si no existe
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+      console.log(`Directorio creado: ${outputDir}`);
+    } else {
+      console.log(`Directorio existente: ${outputDir}`);
+    }
 
     let browser;
     try {
@@ -59,7 +89,6 @@ app.on('ready', () => {
 
           console.log('Haciendo clic en el botón "Siguiente"...');
           await nextButton.click();
-          // await page.waitForTimeout(1000);
         } catch (error) {
           console.log('Error durante la navegación:', error.message);
           hasNextPage = false;
@@ -105,10 +134,10 @@ app.on('ready', () => {
       const pdfPath = path.join(outputDir, 'book.pdf');
       fs.writeFileSync(pdfPath, pdfBytes);
 
+      console.log(`PDF creado en: ${pdfPath}`);
       event.reply('download-complete', { success: true, pdfPath });
     } catch (error) {
       if (browser) await browser.close();
       event.reply('download-complete', { success: false, error: error.message });
     }
   });
-});

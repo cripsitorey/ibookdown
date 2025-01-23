@@ -18,3 +18,15 @@ window.api.receive('download-complete', (args) => {
     alert(`Error durante la descarga: ${args.error}`);
   }
 });
+
+window.api.receive('update-available', () => {
+  alert('¡Nueva actualización disponible! Se está descargando.');
+});
+
+window.api.receive('update-downloaded', () => {
+  const userConfirmed = confirm('¡Actualización descargada! ¿Deseas reiniciar la aplicación para instalarla?');
+  if (userConfirmed) {
+    window.api.send('restart-to-update');
+  }
+});
+
