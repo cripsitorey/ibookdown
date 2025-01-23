@@ -25,7 +25,13 @@
       "!node_modules/**/*",
       "!dist/**/*"
     ],
-    "publish": "always",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "cripsitorey",
+        "repo": "ibookdown" 
+      }
+    ],
     "win": {
       "target": "nsis",
       "icon": "icon.ico",
