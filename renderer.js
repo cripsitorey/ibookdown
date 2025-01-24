@@ -5,16 +5,17 @@ document.getElementById('startButton').addEventListener('click', () => {
   const username = document.getElementById('usernameInput').value;
   const password = document.getElementById('passwordInput').value;
   const loginButtonSelector = document.getElementById('loginButtonSelector').value;
+  const linkTologin = document.getElementById('textLoginLink').value;
   const bookSelector = document.getElementById('bookSelector').value;
   const nextButtonSelector = document.getElementById('selectorInput').value;
 
-  if (!url || !usernameSelector || !passwordSelector || !username || !password || !loginButtonSelector || !bookSelector || !nextButtonSelector) {
+  if (!url || !usernameSelector || !passwordSelector || !username || !password || !loginButtonSelector || !linkTologin || !bookSelector || !nextButtonSelector) {
     alert('Por favor completa todos los campos.');
     return;
   }
 
   console.log('Iniciando descarga con los siguientes datos:', {
-    url, usernameSelector, passwordSelector, username, password, loginButtonSelector, bookSelector, nextButtonSelector,
+    url, usernameSelector, passwordSelector, username, password, loginButtonSelector, linkTologin, bookSelector, nextButtonSelector,
   });
 
   window.api.send('start-download', {
@@ -24,6 +25,7 @@ document.getElementById('startButton').addEventListener('click', () => {
     username,
     password,
     loginButtonSelector,
+    linkTologin,
     bookSelector,
     nextButtonSelector,
   });
