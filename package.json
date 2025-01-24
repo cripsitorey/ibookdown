@@ -1,6 +1,6 @@
 {
   "name": "electron-ib-book-downloader",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Una aplicación para descargar libros y convertirlos a PDF.",
   "main": "main.js",
   "author": {

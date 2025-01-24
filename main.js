@@ -71,7 +71,30 @@ ipcMain.on('start-download', async (event, args) => {
     console.log(`Haciendo clic en el botón de ingreso: ${args.loginButtonSelector}`);
     await page.click(args.loginButtonSelector);
     // await page.waitForNavigation();
-
+    
+    console.log(`Buscando botón con texto: ${args.linkTologin}`);
+    
+    // Encuentra todos los enlaces en la página
+    links = await page.$$('a');
+    
+    // Busca el enlace que tenga el texto interno correspondiente
+    let LinktoLog = null;
+    for (const link of links) {
+      const text = await page.evaluate(el => el.innerText, link);
+      if (text.trim() === args.linkTologin) {
+        bookLink = link;
+        break;
+      }
+    }
+    
+    if (!LinktoLog) {
+      throw new Error('Enlace del libro no encontrado');
+    }
+    
+    // Haz clic en el enlace
+    await bookLink.click();
+    
+    // await page.waitForNavigation();
     // Seleccionar el libro
     console.log(`Buscando botón con texto: ${args.bookSelector}`);
 
@@ -94,30 +117,6 @@ ipcMain.on('start-download', async (event, args) => {
     
     // Haz clic en el enlace
     await bookLink.click();
-    // await page.waitForNavigation();
-
-    console.log(`Buscando botón con texto: ${args.linkTologin}`);
-
-    // Encuentra todos los enlaces en la página
-    links = await page.$$('a');
-    
-    // Busca el enlace que tenga el texto interno correspondiente
-    let LinktoLog = null;
-    for (const link of links) {
-      const text = await page.evaluate(el => el.innerText, link);
-      if (text.trim() === args.linkTologin) {
-        bookLink = link;
-        break;
-      }
-    }
-    
-    if (!LinktoLog) {
-      throw new Error('Enlace del libro no encontrado');
-    }
-    
-    // Haz clic en el enlace
-    await bookLink.click();
-
     // await page.waitForNavigation();
 
     // Interceptar imágenes
