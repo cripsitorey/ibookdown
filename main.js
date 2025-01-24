@@ -55,7 +55,7 @@ ipcMain.on('start-download', async (event, args) => {
 
   let browser;
   try {
-    browser = await puppeteer.launch({ headless: true });
+    browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
     // Navegar al inicio de sesión
@@ -73,12 +73,27 @@ ipcMain.on('start-download', async (event, args) => {
     // await page.waitForNavigation();
 
     // Seleccionar el libro
-    console.log(`Seleccionando libro con selector: ${args.bookSelector}`);
-    const bookButton = await page.$(args.bookSelector);
-    if (!bookButton) {
-      throw new Error('Botón del libro no encontrado');
+    console.log(`Buscando botón con texto: ${args.bookSelector}`);
+
+    // Encuentra todos los enlaces en la página
+    const links = await page.$$('a');
+    
+    // Busca el enlace que tenga el texto interno correspondiente
+    let bookLink = null;
+    for (const link of links) {
+      const text = await page.evaluate(el => el.innerText, link);
+      if (text.trim() === args.bookSelector) {
+        bookLink = link;
+        break;
+      }
     }
-    await bookButton.click();
+    
+    if (!bookLink) {
+      throw new Error('Enlace del libro no encontrado');
+    }
+    
+    // Haz clic en el enlace
+    await bookLink.click();
     // await page.waitForNavigation();
 
     // Interceptar imágenes
